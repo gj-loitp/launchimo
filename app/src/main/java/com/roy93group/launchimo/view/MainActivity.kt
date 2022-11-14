@@ -1,4 +1,4 @@
-package com.ahmetardakavakci.launchimo.view
+package com.roy93group.launchimo.view
 
 import android.content.*
 import android.content.pm.PackageManager
@@ -35,12 +35,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ahmetardakavakci.launchimo.R
-import com.ahmetardakavakci.launchimo.model.App
-import com.ahmetardakavakci.launchimo.ui.theme.LaunchimoTheme
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
+import com.roy93group.launchimo.R
+import com.roy93group.launchimo.model.App
+import com.roy93group.launchimo.ui.theme.LaunchimoTheme
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -91,7 +91,8 @@ class MainActivity : ComponentActivity() {
         allApps = pm.queryIntentActivities(intent, 0)
 
         // Shared preferences
-        sharedPreferences = getSharedPreferences("com.ahmetardakavakci.launchimo", Context.MODE_PRIVATE)
+        sharedPreferences =
+            getSharedPreferences("com.ahmetardakavakci.launchimo", Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
         // Window variable for coloring
@@ -101,7 +102,7 @@ class MainActivity : ComponentActivity() {
         appsListUnsorted = arrayListOf()
         appsList = listOf()
 
-        for(info in allApps) {
+        for (info in allApps) {
 
             val app = App(
                 info.loadLabel(pm).toString(),
@@ -141,36 +142,38 @@ fun MainScreen(navController: NavHostController) {
     checkSettings()
     checkDarkMode()
 
-    var searchInput by remember { mutableStateOf(TextFieldValue())}
+    var searchInput by remember { mutableStateOf(TextFieldValue()) }
     var expanded by remember { mutableStateOf(false) }
 
-        Surface(
+    Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.Transparent
     ) {
-        Column (
+        Column(
             modifier = Modifier
-                .padding(rememberInsetsPaddingValues(
-                    insets = LocalWindowInsets.current.systemBars,
-                    applyTop = true,
-                    applyBottom = true))
-            ) {
+                .padding(
+                    rememberInsetsPaddingValues(
+                        insets = LocalWindowInsets.current.systemBars,
+                        applyTop = true,
+                        applyBottom = true
+                    )
+                )
+        ) {
             // App list
             Surface(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(rounded)
                     .fillMaxWidth()
-                    .weight(9f)
-                ,color = colorBackground
+                    .weight(9f), color = colorBackground
             ) {
                 AppList(appsList, searchInput)
             }
 
             DropdownMenu(
                 modifier = Modifier
-                    .background(colorItemBackground)
-                ,expanded = expanded,
+                    .background(colorItemBackground),
+                expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
                 DropdownMenuItem(
@@ -186,7 +189,8 @@ fun MainScreen(navController: NavHostController) {
             }
 
             // Searchbar
-            Box(Modifier.weight(1f)
+            Box(
+                Modifier.weight(1f)
             ) {
                 TextField(
                     modifier = Modifier
@@ -201,8 +205,7 @@ fun MainScreen(navController: NavHostController) {
                         .fillMaxHeight()
                         .fillMaxWidth()
                         .clip(rounded)
-                        .align(Alignment.Center)
-                    ,colors = TextFieldDefaults.textFieldColors(
+                        .align(Alignment.Center), colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = searchbarColor,
                         cursorColor = textColor,
                         textColor = textColor,
@@ -217,8 +220,7 @@ fun MainScreen(navController: NavHostController) {
                             contentDescription = "",
                             modifier = Modifier
                                 .padding(15.dp)
-                                .size(24.dp)
-                            ,tint = accentColor
+                                .size(24.dp), tint = accentColor
                         )
                     },
                     trailingIcon = {
@@ -376,7 +378,7 @@ fun AppList(apps: List<App>, state: TextFieldValue) {
     ) {
 
         val searchedText = state.text
-        filteredApps = if(searchedText.isEmpty()) {
+        filteredApps = if (searchedText.isEmpty()) {
             apps
         } else {
             val resultList = ArrayList<App>()
@@ -394,7 +396,7 @@ fun AppList(apps: List<App>, state: TextFieldValue) {
         items(
             count = filteredApps.size,
             key = {
-                  it.inc()
+                it.inc()
             },
             itemContent = { app ->
                 AppLine(
@@ -405,7 +407,7 @@ fun AppList(apps: List<App>, state: TextFieldValue) {
                     pkgname = filteredApps[app].pkgName
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-        })
+            })
     }
 
 }
@@ -415,10 +417,20 @@ fun checkDarkMode() {
     w.navigationBarColor = android.graphics.Color.TRANSPARENT
     w.statusBarColor = android.graphics.Color.TRANSPARENT
 
-    when(sharedPreferences.getBoolean("darkMode", true)) {
+    when (sharedPreferences.getBoolean("darkMode", true)) {
         true -> {
-            colorBackground = Color(red = 38, blue = 38, green = 38, alpha = (listBackgroundAlpha*255).roundToInt())
-            colorItemBackground = Color(red = 64, blue = 64, green = 64, alpha = (appBackgroundAlpha*255).roundToInt())
+            colorBackground = Color(
+                red = 38,
+                blue = 38,
+                green = 38,
+                alpha = (listBackgroundAlpha * 255).roundToInt()
+            )
+            colorItemBackground = Color(
+                red = 64,
+                blue = 64,
+                green = 64,
+                alpha = (appBackgroundAlpha * 255).roundToInt()
+            )
             dropdownBackground = Color(red = 64, blue = 64, green = 64, alpha = 255)
             dropdownTextColor = Color.White
             accentColor = Color(0xFFC5CAE9)
@@ -426,13 +438,23 @@ fun checkDarkMode() {
             textColor = Color.White
         }
         false -> {
-            colorBackground = Color(red = 255, blue = 255, green = 255, alpha = (listBackgroundAlpha*255).roundToInt())
-            colorItemBackground = Color(red = 232, green = 234, blue = 246, alpha = (appBackgroundAlpha*255).roundToInt())
+            colorBackground = Color(
+                red = 255,
+                blue = 255,
+                green = 255,
+                alpha = (listBackgroundAlpha * 255).roundToInt()
+            )
+            colorItemBackground = Color(
+                red = 232,
+                green = 234,
+                blue = 246,
+                alpha = (appBackgroundAlpha * 255).roundToInt()
+            )
             dropdownBackground = Color(red = 232, green = 234, blue = 246, alpha = 255)
             dropdownTextColor = Color.Black
             accentColor = Color(0xFF3949AB)
             searchbarColor = Color(red = 232, green = 234, blue = 246, alpha = 255)
-            textColor = if(listBackgroundAlpha < 0.5 && appBackgroundAlpha < 0.5) {
+            textColor = if (listBackgroundAlpha < 0.5 && appBackgroundAlpha < 0.5) {
                 Color.White
             } else {
                 Color.Black
@@ -443,18 +465,18 @@ fun checkDarkMode() {
 }
 
 fun checkSettings() {
-    settingsIconAlpha = when(sharedPreferences.getBoolean("hideSettings", false)) {
+    settingsIconAlpha = when (sharedPreferences.getBoolean("hideSettings", false)) {
         true -> 0f
         false -> 1f
     }
 
-    hideIcons = when(sharedPreferences.getBoolean("hideIcons", false)) {
+    hideIcons = when (sharedPreferences.getBoolean("hideIcons", false)) {
         true -> true
         false -> false
     }
 
-    listBackgroundAlpha = sharedPreferences.getFloat("listBackgroundAlpha",  0.9f)
-    appBackgroundAlpha = sharedPreferences.getFloat("appBackgroundAlpha",  1.0f)
+    listBackgroundAlpha = sharedPreferences.getFloat("listBackgroundAlpha", 0.9f)
+    appBackgroundAlpha = sharedPreferences.getFloat("appBackgroundAlpha", 1.0f)
 
 }
 
@@ -465,7 +487,10 @@ fun MainPreview() {
         AppLine(
             context = LocalContext.current,
             label = "App name",
-            icon = ContextCompat.getDrawable(LocalContext.current, R.drawable.ic_launcher_foreground)!!,
+            icon = ContextCompat.getDrawable(
+                LocalContext.current,
+                R.drawable.ic_launcher_foreground
+            )!!,
             intent = Intent(),
             pkgname = "none"
         )

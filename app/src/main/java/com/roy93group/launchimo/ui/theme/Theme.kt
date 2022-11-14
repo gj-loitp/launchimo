@@ -1,4 +1,4 @@
-package com.ahmetardakavakci.launchimo.ui.theme
+package com.roy93group.launchimo.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

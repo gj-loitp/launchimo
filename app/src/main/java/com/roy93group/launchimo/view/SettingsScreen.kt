@@ -1,4 +1,4 @@
-package com.ahmetardakavakci.launchimo.view
+package com.roy93group.launchimo.view
 
 import android.app.Activity
 import androidx.compose.foundation.background
@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.ahmetardakavakci.launchimo.ui.theme.LaunchimoTheme
+import com.roy93group.launchimo.ui.theme.LaunchimoTheme
 
 var thumbColor: Color = Color(0xFF2C2C2C)
 var uncheckedThumbColor: Color = Color(0xFF2C2C2C)
@@ -33,11 +33,14 @@ fun SettingsScreen(navController: NavHostController) {
 
     // Switch mutables
     val darkMode = remember { mutableStateOf(sharedPreferences.getBoolean("darkMode", true)) }
-    val hideSettings = remember { mutableStateOf(sharedPreferences.getBoolean("hideSettings", false)) }
+    val hideSettings =
+        remember { mutableStateOf(sharedPreferences.getBoolean("hideSettings", false)) }
     val hideIcons = remember { mutableStateOf(sharedPreferences.getBoolean("hideIcons", false)) }
 
-    val listBackgroundAlpha = remember { mutableStateOf(sharedPreferences.getFloat("listBackgroundAlpha", 0.9f)) }
-    val appBackgroundAlpha = remember { mutableStateOf(sharedPreferences.getFloat("appBackgroundAlpha", 1.0f)) }
+    val listBackgroundAlpha =
+        remember { mutableStateOf(sharedPreferences.getFloat("listBackgroundAlpha", 0.9f)) }
+    val appBackgroundAlpha =
+        remember { mutableStateOf(sharedPreferences.getFloat("appBackgroundAlpha", 1.0f)) }
 
     // Context
     val activity = LocalContext.current as Activity
@@ -45,7 +48,7 @@ fun SettingsScreen(navController: NavHostController) {
 
     checkDarkMode()
 
-    if(darkMode.value) {
+    if (darkMode.value) {
         w.navigationBarColor = android.graphics.Color.DKGRAY
         w.statusBarColor = android.graphics.Color.DKGRAY
         settingsBackground = Color(0xFF262626)
@@ -73,11 +76,11 @@ fun SettingsScreen(navController: NavHostController) {
 
             // Back button
             Box(
-               modifier = Modifier
-                   .background(Color.Transparent)
-                   .clickable {
-                       navController.navigate("main")
-                   }
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .clickable {
+                        navController.navigate("main")
+                    }
             ) {
                 Icon(
                     Icons.Default.ArrowBack,
@@ -90,11 +93,33 @@ fun SettingsScreen(navController: NavHostController) {
             }
 
             // Setting options
-            SettingsSwitch("Dark mode","Makes the app dark", "darkMode", darkMode, navController)
-            SettingsSwitch("Transparent Settings icon", "Makes the settings icon transparent. You can still click it but the icon will not be visible.", "hideSettings", hideSettings, navController)
-            SettingsSwitch("Hide app icons", "Only show the app name on the list", "hideIcons", hideIcons, navController)
-            SettingsAlphaDropdown("List background alpha","Transparency value for app list background","listBackgroundAlpha", listBackgroundAlpha)
-            SettingsAlphaDropdown("App background alpha","Transparency value for background of every app in the list","appBackgroundAlpha", appBackgroundAlpha)
+            SettingsSwitch("Dark mode", "Makes the app dark", "darkMode", darkMode, navController)
+            SettingsSwitch(
+                "Transparent Settings icon",
+                "Makes the settings icon transparent. You can still click it but the icon will not be visible.",
+                "hideSettings",
+                hideSettings,
+                navController
+            )
+            SettingsSwitch(
+                "Hide app icons",
+                "Only show the app name on the list",
+                "hideIcons",
+                hideIcons,
+                navController
+            )
+            SettingsAlphaDropdown(
+                "List background alpha",
+                "Transparency value for app list background",
+                "listBackgroundAlpha",
+                listBackgroundAlpha
+            )
+            SettingsAlphaDropdown(
+                "App background alpha",
+                "Transparency value for background of every app in the list",
+                "appBackgroundAlpha",
+                appBackgroundAlpha
+            )
             SettingsText(text = "Restart launcher") {
                 activity.finish()
                 activity.startActivity(intent)
@@ -109,10 +134,12 @@ fun SettingsText(text: String, textClicked: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(PaddingValues(
-                start = 15.dp,
-                end = 15.dp,
-                bottom = 15.dp)
+            .padding(
+                PaddingValues(
+                    start = 15.dp,
+                    end = 15.dp,
+                    bottom = 15.dp
+                )
             )
             .clip(rounded)
             .background(settingsItemBackground)
@@ -121,8 +148,7 @@ fun SettingsText(text: String, textClicked: () -> Unit) {
             modifier = Modifier
                 .clickable { textClicked() }
                 .fillMaxWidth()
-                .padding(start = 15.dp, top = 15.dp, bottom = 15.dp)
-            ,text = text,
+                .padding(start = 15.dp, top = 15.dp, bottom = 15.dp), text = text,
 
             color = settingsTextColor,
             fontSize = 20.sp
@@ -131,14 +157,19 @@ fun SettingsText(text: String, textClicked: () -> Unit) {
 }
 
 @Composable
-fun SettingsSwitch(text: String, descText: String, sharedKey: String, checkedState: MutableState<Boolean>, navController: NavHostController) {
+fun SettingsSwitch(
+    text: String,
+    descText: String,
+    sharedKey: String,
+    checkedState: MutableState<Boolean>,
+    navController: NavHostController
+) {
     Box(Modifier.padding(PaddingValues(start = 15.dp, end = 15.dp, bottom = 15.dp))) {
         Row(
             modifier = Modifier
                 .clip(rounded)
                 .background(settingsItemBackground)
-                .fillMaxWidth()
-            ,horizontalArrangement = Arrangement.Center,
+                .fillMaxWidth(), horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -165,8 +196,7 @@ fun SettingsSwitch(text: String, descText: String, sharedKey: String, checkedSta
                 modifier = Modifier
                     .weight(2.2f)
                     .fillMaxWidth()
-                    .padding(end = 7.dp)
-                ,checked = checkedState.value,
+                    .padding(end = 7.dp), checked = checkedState.value,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = thumbColor,
                     uncheckedThumbColor = uncheckedThumbColor,
@@ -176,7 +206,7 @@ fun SettingsSwitch(text: String, descText: String, sharedKey: String, checkedSta
                     checkedState.value = it
                     editor.putBoolean(sharedKey, it)
                     editor.commit()
-                    if (text == "Dark mode"){
+                    if (text == "Dark mode") {
                         navController.navigate("main")
                         navController.navigate("settings")
                     }
@@ -188,15 +218,21 @@ fun SettingsSwitch(text: String, descText: String, sharedKey: String, checkedSta
 }
 
 @Composable
-fun SettingsAlphaDropdown(text: String, descText: String, sharedKey: String, lastValue: MutableState<Float>) {
+fun SettingsAlphaDropdown(
+    text: String,
+    descText: String,
+    sharedKey: String,
+    lastValue: MutableState<Float>
+) {
     var expanded by remember { mutableStateOf(false) }
     var lastDropdownValue by remember { mutableStateOf(lastValue.value.toString()) }
 
-    Box(Modifier
-        .padding(PaddingValues(start = 15.dp, end = 15.dp, bottom = 15.dp))
-        .clip(rounded)
-        .fillMaxWidth()
-        .background(settingsItemBackground)
+    Box(
+        Modifier
+            .padding(PaddingValues(start = 15.dp, end = 15.dp, bottom = 15.dp))
+            .clip(rounded)
+            .fillMaxWidth()
+            .background(settingsItemBackground)
     ) {
         Row(
             modifier = Modifier.padding(PaddingValues(start = 17.dp, top = 17.dp, bottom = 17.dp)),
@@ -224,12 +260,14 @@ fun SettingsAlphaDropdown(text: String, descText: String, sharedKey: String, las
                     expanded = !expanded
                 }
             ) {
-                Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 
                     TextField(
                         modifier = Modifier
-                            .fillMaxWidth()
-                        ,value = lastDropdownValue,
+                            .fillMaxWidth(), value = lastDropdownValue,
                         readOnly = true,
                         enabled = false,
                         textStyle = TextStyle(fontSize = 20.sp),
@@ -238,8 +276,7 @@ fun SettingsAlphaDropdown(text: String, descText: String, sharedKey: String, las
                                 Icons.Default.ArrowDropDown,
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .size(24.dp)
-                                ,tint = accentColor
+                                    .size(24.dp), tint = accentColor
                             )
                         },
                         colors = TextFieldDefaults.textFieldColors(

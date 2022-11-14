@@ -1,4 +1,4 @@
-package com.ahmetardakavakci.launchimo.ui.theme
+package com.roy93group.launchimo.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
