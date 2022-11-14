@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.ahmetardakavakci.launchimo"
+        applicationId "com.rou93group.launchimo"
         minSdk 22
-        targetSdk 32
-        versionCode 5
-        versionName "1.4.0"
+        targetSdk 33
+        versionCode 20221114
+        versionName "2022.11.14"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
